@@ -34,20 +34,59 @@ jobs:
       run: |
         src/orders/scripts/ci.sh
 
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v2
+    - name: Build image
+      uses: mamezou-tech/buildpacks-action@master
       with:
-        image: tonistiigi/binfmt:latest
-        platforms: all
+        image: 'orders-app'
+        tag: '${{github.sha}}'
+        path: 'src/orders'
+        builder: 'gcr.io/paketo-buildpacks/builder:base'
+        env: 'JAVA_OPTS=-XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/urandom'
 
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v2
+    - name: Scan Image
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'orders-app:${{github.sha}}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: false
+        vuln-type: 'os,library'
+        severity: 'LOW'   
 
-    - name: Expose GitHub Runtime
-      uses: crazy-max/ghaction-github-runtime@v2
+    - name: Generate SBOM
+      uses: anchore/sbom-action@v0
+      with:
+        image: 'orders-app:${{github.sha}}' 
+
+    - name: publish artifact
+      uses: anchore/sbom-action/publish-sbom@v0
+      with:
+        sbom-artifact-match: ".*\\.spdx$"          
         
-    - name: Build container image
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v3.1.1
+      with:
+        cosign-release: main     
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1         
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public      
+
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        REGISTRY: "public.ecr.aws/b6s1t7h8"
+        REPOSITORY: orders
+        IMAGE_TAG: ${{ github.sha }}
       run: |
-        scripts/build-image.sh -s orders -t ci --actions-cache
+        docker images
+        docker tag orders-app:$IMAGE_TAG $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG    
