@@ -3,12 +3,12 @@ name: static analysis and poc-dev deploy
 on:
   workflow_run:
     workflows:
-      - "ci-assets"
-      - "ci-cart"
-      - "ci-catalog"
-      - "ci-checkout"
-      - "ci-orders"
-      - "ci-ui"
+      - "Orders CI"
+      - "Cart CI"
+      - "Catalog CI"
+      - "Checkout CI"
+      - "Assets CI"
+      - "UI CI"
     types:
       - completed
 
