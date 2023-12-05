@@ -83,7 +83,7 @@ jobs:
 
     - name: Build, tag, and push docker image to Amazon ECR
       env:
-        REGISTRY: "public.ecr.aws/i5t0v8v6"
+        REGISTRY: "public.ecr.aws/b6s1t7h8"
         REPOSITORY: cart
         IMAGE_TAG: ${{ github.sha }}
       run: |
