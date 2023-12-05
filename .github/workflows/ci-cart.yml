@@ -92,7 +92,7 @@ jobs:
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG    
 
     - name: Run kubesec scanner
-      uses: controlplaneio/kubesec-action@master
+      uses: controlplaneio/kubesec-action@v0.0.2
       with:
         input: dist/kubernetes/deploy.yaml
         exit-code: "0"
