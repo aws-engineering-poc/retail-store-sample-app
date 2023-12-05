@@ -1,0 +1,45 @@
+name: static analysis and poc-dev deploy
+
+on:
+  workflow_run:
+    workflows:
+      - "ci-assets"
+      - "ci-cart"
+      - "ci-catalog"
+      - "ci-checkout"
+      - "ci-orders"
+      - "ci-ui"
+    types:
+      - completed
+
+jobs:
+  apply_kubectl:
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1          
+
+    - name: run k8s apply - nonprod demo-dev
+      run: |
+        chmod +x scripts/k8s_manifests.sh
+        scripts/k8s_manifests.sh nonprod-mkt01-aws-us-west-2 599654392735 us-west-2 demo-dev    
+
+    - name: run k8s apply - nonprod demo-stage
+      run: |
+        chmod +x scripts/k8s_manifests.sh
+        scripts/k8s_manifests.sh nonprod-mkt01-aws-us-west-2 599654392735 us-west-2 demo-stage
+
+    - name: run k8s apply - prod demo-prod
+      run: |
+        chmod +x scripts/k8s_manifests.sh
+        scripts/k8s_manifests.sh prod-mkt01-aws-us-east-2 599654392735 us-east-2 demo-prod
+
