@@ -1,16 +1,23 @@
 name: Deploy Application
 
+# on:
+#   workflow_run:
+#     workflows:
+#       - "Orders CI"
+#       - "Cart CI"
+#       - "Catalog CI"
+#       - "Checkout CI"
+#       - "Assets CI"
+#       - "UI CI"
+#     types:
+#       - completed
 on:
-  workflow_run:
-    workflows:
-      - "Orders CI"
-      - "Cart CI"
-      - "Catalog CI"
-      - "Checkout CI"
-      - "Assets CI"
-      - "UI CI"
-    types:
-      - completed
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
 
 jobs:
   apply_kubectl:

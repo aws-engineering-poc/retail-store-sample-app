@@ -27,4 +27,4 @@ else
 fi
 
 
-kubectl apply -f ../dist/kubernetes/deploy.yaml --namespace $KUBE_NAMESPACE
+kubectl apply -f dist/kubernetes/deploy.yaml --namespace $KUBE_NAMESPACE
