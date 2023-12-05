@@ -1,4 +1,4 @@
-name: static analysis and poc-dev deploy
+name: Deploy Application
 
 on:
   workflow_run:
