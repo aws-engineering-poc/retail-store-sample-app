@@ -56,7 +56,12 @@ jobs:
     - name: Generate SBOM
       uses: anchore/sbom-action@v0
       with:
-        image: 'cart-app:${{github.sha}}'        
+        image: 'cart-app:${{github.sha}}' 
+
+    - name: publish artifact
+      uses: anchore/sbom-action/publish-sbom@v0
+      with:
+        sbom-artifact-match: ".*\\.spdx$"          
         
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.1.1
@@ -68,7 +73,6 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: us-east-1         
 
     - name: Login to Amazon ECR
@@ -85,4 +89,13 @@ jobs:
       run: |
         docker images
         docker tag cart-app:$IMAGE_TAG $REGISTRY/$REPOSITORY:$IMAGE_TAG
-        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG             
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG    
+
+    - name: Run kubesec scanner
+      uses: controlplaneio/kubesec-action@master
+      with:
+        input: dist/kubernetes/deploy.yaml
+        exit-code: "0"
+        format: template
+        template: template/sarif.tpl
+        output: kubesec-results.sarif        
