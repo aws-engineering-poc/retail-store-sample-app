@@ -89,7 +89,20 @@ jobs:
       run: |
         docker images
         docker tag cart-app:$IMAGE_TAG $REGISTRY/$REPOSITORY:$IMAGE_TAG
-        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG    
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG 
+
+    - name: Install Argo CD CLI
+      run: |
+        wget https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 -O /usr/local/bin/argocd
+        chmod +x /usr/local/bin/argocd
+
+    - name: Login to Argo CD
+      run: |
+        argocd login a851dbcc63a334612aacea9317888bed-644098779.us-east-2.elb.amazonaws.com --username admin --password ${{ secrets.ARGOCD_PASSWORD }} --insecure
+
+    - name: Sync Application
+      run: |
+        argocd app sync demo-dev-retail-app-carts
 
     # - name: Run kubesec scanner
     #   uses: controlplaneio/kubesec-action@v0.0.2
