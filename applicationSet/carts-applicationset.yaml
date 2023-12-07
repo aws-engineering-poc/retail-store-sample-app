@@ -12,17 +12,17 @@ spec:
         url: https://B3BBB43D1E4751E23BE08EE5B8FF3F2A.gr7.us-west-2.eks.amazonaws.com
         namespace: demo-dev
         revision: HEAD
-        manifest: manifest/manifest-dev.yaml
+        manifest: manifest/demo-dev
       - cluster: nonprod-mkt01-aws-us-west-2
         url: https://B3BBB43D1E4751E23BE08EE5B8FF3F2A.gr7.us-west-2.eks.amazonaws.com
         namespace: demo-stage
         revision: HEAD
-        manifest: manifest/manifest-stage.yaml
+        manifest: manifest/demo-stage
       - cluster: prod-mkt01-aws-us-east-2
         url: https://5E72AB334CC76FD181E35A7C085E38AB.gr7.us-east-2.eks.amazonaws.com
         namespace: demo-prod
         revision: HEAD
-        manifest: manifest/manifest-prod.yaml
+        manifest: manifest/demo-prod
   template:
     metadata:
       name: '{{.namespace}}-retail-app-carts'

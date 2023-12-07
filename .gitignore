@@ -8,5 +8,5 @@
 reports
 env
 oss-output
-kubeconfig_*
+kubeconfig*
 .idea
