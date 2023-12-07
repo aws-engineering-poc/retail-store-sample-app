@@ -26,19 +26,6 @@ spec:
   providerConfigRef:
     name: dynamodb
 ---
-# Source: carts/templates/serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: carts
-  labels:
-    helm.sh/chart: carts-0.0.1
-    app.kubernetes.io/name: carts
-    app.kubernetes.io/instance: carts
-    app.kubernetes.io/component: service
-    app.kuberneres.io/owner: retail-store-sample
-    app.kubernetes.io/managed-by: Helm
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -46,7 +33,6 @@ metadata:
 data:
   CARTS_DYNAMODB_TABLENAME: "demo-dev-carts-dynamodb"
 ---
-# Source: carts/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -70,8 +56,6 @@ spec:
     app.kubernetes.io/instance: carts
     app.kubernetes.io/component: service
     app.kuberneres.io/owner: retail-store-sample
-# ---
-# Source: carts/templates/deployment.yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
