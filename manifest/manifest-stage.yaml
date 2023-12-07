@@ -44,7 +44,7 @@ kind: ConfigMap
 metadata:
   name: carts-crossplane
 data:
-  CARTS_DYNAMODB_TABLENAME: "demo-dev-carts-dynamodb"
+  CARTS_DYNAMODB_TABLENAME: "demo-stage-carts-dynamodb"
 ---
 # Source: carts/templates/service.yaml
 apiVersion: v1
