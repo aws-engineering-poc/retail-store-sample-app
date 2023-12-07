@@ -35,6 +35,3 @@ spec:
       destination:
         server: '{{.url}}'
         namespace: '{{.namespace}}'
-      syncPolicy:
-        automated:
-          prune: true
