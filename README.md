@@ -21,7 +21,7 @@ The application has been deliberately over-engineered to generate multiple de-co
 
 ![Architecture](/docs/images/architecture.png)
 
-| Component | Language | Container Image     | Description                                                                 |
+| Component | Language | Container Images     | Description                                                                 |
 |-----------|----------|---------------------|-----------------------------------------------------------------------------|
 | ![ui workflow](https://github.com/aws-containers/retail-store-sample-app/actions/workflows/ci-ui.yml/badge.svg)        | Java     | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-ui)       | Aggregates API calls to the various other services and renders the HTML UI. |
 | ![catalog workflow](https://github.com/aws-containers/retail-store-sample-app/actions/workflows/ci-catalog.yml/badge.svg)   | Go       | [Link](https://gallery.ecr.aws/aws-containers/retail-store-sample-catalog)  | Product catalog API                                                         |
