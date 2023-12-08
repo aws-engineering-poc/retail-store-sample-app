@@ -101,6 +101,8 @@ spec:
           env:
             - name: JAVA_OPTS
               value: -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/urandom
+            - name: SPRING_PROFILES_ACTIVE
+              value: dynamodb             
           envFrom:
             - configMapRef:
                 name: carts-crossplane
@@ -111,7 +113,7 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1000
-          image: "public.ecr.aws/aws-containers/retail-store-sample-cart:0.5.0"
+          image: "public.ecr.aws/aws-containers/retail-store-sample-cart:0.4.0"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
