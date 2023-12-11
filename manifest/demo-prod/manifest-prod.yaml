@@ -103,6 +103,8 @@ spec:
           env:
             - name: JAVA_OPTS
               value: -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/urandom
+            - name: SPRING_PROFILES_ACTIVE
+              value: dynamodb                     
           envFrom:
             - configMapRef:
                 name: carts-crossplane
