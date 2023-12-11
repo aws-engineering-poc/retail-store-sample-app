@@ -3,15 +3,9 @@ name: Cart CI
 on:
   push:
     branches:
-      - "*"
-    tags:
       - "!*"
-  pull_request:
-    branches:
-    - main
-    paths:
-    - 'src/cart/**'
-    - 'images/**'
+    tags:
+      - "*"
   workflow_dispatch:
 
 jobs:
@@ -31,9 +25,13 @@ jobs:
       run: |
         echo "y" | argocd login a851dbcc63a334612aacea9317888bed-644098779.us-east-2.elb.amazonaws.com --username admin --password ${{ secrets.ARGOCD_PASSWORD }} --insecure --server a851dbcc63a334612aacea9317888bed-644098779.us-east-2.elb.amazonaws.com
 
-    - name: Sync Application
+    - name: Sync Application - stage
       run: |
-        argocd app sync demo-dev-retail-app
+        argocd app sync demo-stage-retail-app
+
+    - name: Sync Application - prod
+      run: |
+        argocd app sync demo-prod-retail-app        
 
     # - name: Set up JDK
     #   uses: actions/setup-java@v3
