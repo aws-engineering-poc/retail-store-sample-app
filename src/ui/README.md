@@ -1,4 +1,4 @@
-# AWS Containers Retail Sample - UI Service
+# AWS Containers Retail Sample - UI Service.
 
 | Language | Persistence |
 |---|---|
